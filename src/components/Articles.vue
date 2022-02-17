@@ -49,7 +49,7 @@
           getArticles(){
 
 
-            axios.post('http://localhost/prj/osef-vue2/src/api/UserConnection.php', {
+            axios.get('http://localhost/prj/osef-vue2/src/api/getArticles.php', {
               mail: this.emailInput,
               mdp: this.passwordInput,})
                 .then((response) =>{
