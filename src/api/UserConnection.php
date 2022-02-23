@@ -10,7 +10,7 @@ require_once "bdd.php";
     $mail = htmlspecialchars($request->mail);
     $mdp = htmlspecialchars($request->mdp);
 
-    $req = $bdd->prepare("SELECT * FROM user WHERE email = ? ");
+    $req = $bdd->prepare("SELECT * FROM user WHERE email = ?");
     $req->execute([
         $mail
     ]);

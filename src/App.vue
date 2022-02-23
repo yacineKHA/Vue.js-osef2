@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import HeaderConnected from './components/HeaderConnected.vue'
-import Articles from './components/Articles.vue'
-import ConnectionModal from './components/ConnectionModal.vue'
-import MenuProfile from './components/MenuProfile.vue'
+import HeaderConnected from './components/HeaderConnected.vue';
+import Articles from './components/Articles.vue';
+import ConnectionModal from './components/ConnectionModal.vue';
+import MenuProfile from './components/MenuProfile.vue';
 import CreateArticle from "@/components/CreateArticle";
 
 
@@ -52,14 +52,14 @@ export default {
   },
 
   methods: {
+
   },
 
   watch:{
 
   }
-
-
 }
+
 </script>
 
 <style>
