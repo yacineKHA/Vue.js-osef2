@@ -1,15 +1,17 @@
 <template>
-    <div class="conteneur">
-
+    <div id="bottom">
+      <button @click="getArticles">Get Articles</button>
+    </div>
+    <div v-for="article in articles" :key="article['idArticle']" class="conteneur">
             <div id="pseudo">
               <div id="imageProfile">
                 <img src="../assets/babyYoga.jpeg" alt="profile Image">
               </div>
               <div id="nameProfile">
 
-                <p>Yoda</p>
+                <p>{{article["title"]}}</p>
                 <p>#FILMS</p>
-                <p></p>
+                <p>blabla{{article["text"]}}</p>
               </div>
             </div>
             <ul id="contenu">
@@ -22,48 +24,44 @@
                     </div>
                 </li>
             </ul>
-            <div id="bottom">
 
-            </div>
     </div>
+
 </template>
 
 
 <script>
-
     import axios from "axios";
 
-
     export default {
-        name: "home",
+        name: "article",
 
         data(){
           return{
             user:{
 
             },
-
+            articles: [],
             articleId: [],
-            articleTitle: [],
+            articleTitle:[],
             articleText:[],
             articleImage:[],
             articleDate:[]
-
           }
         },
 
         methods:{
-
           getArticles(){
             axios.post('http://localhost/prj/osef-vue2/src/api/getArticles.php')
                 .then((response) =>{
                   if (response.data){
-                    this.articleId = response.data['idArticle'];
+                    this.articles = response.data;
+                    this.articleId = [response.data['idArticle']];
                     this.articleTitle = response.data['title'];
                     this.articleText = response.data['text'];
                     this.articleImage = "../../public/images"+ response.data['image'];
                     this.articleDate = response.data['date'];
-                    console.log("Articles :"+response.data);
+                    console.log("Articles :" + response.data[2]['title']);
                     stop();
                   } else {
                     this.span = true;
@@ -78,10 +76,9 @@
         },
 
         mounted() {
-          this.methods.getArticles();
+          //Produit une erreur si décommenté.
+          // this.methods.getArticles();
         }
-
-
     }
 
 </script>

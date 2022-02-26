@@ -10,27 +10,11 @@ require_once "bdd.php";
 
 
 try {
-    $req = $bdd->prepare("SELECT * INTO article");
+    $req = $bdd->prepare("SELECT * FROM article");
     $req->execute();
     $data = $req->fetchAll();
     if ($data != null) {
-        foreach ($data as $key) {
-            $idArticle = $key['id_article'];
-            $title = $key['title'];
-            $text = $key['text'];
-            $image = $key['image'];
-            $date = $key['date'];
-
-            $article = [
-                $idArticle,
-                $title,
-                $text,
-                $image,
-                $date
-            ];
-
-            echo json_encode($article);
-        }
+        echo json_encode($data);
 
     } else {
         return false;

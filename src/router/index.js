@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router';
-
+import { createRouter, createWebHistory } from 'vue-router'
+import Connection from '../components/ConnectionModal.vue'
+import ListOfArticles from '../components/ListOfArticles.vue'
+import createArticle from "@/components/CreateArticle";
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: ()=>
-        import("../components/Articles.vue"),
+    component: ListOfArticles,
     meta:{
       title: 'Home'
     }
@@ -14,8 +15,7 @@ const routes = [
   {
     path: '/connection',
     name: 'Connection',
-    component: ()=>
-        import("../components/ConnectionModal.vue"),
+    component: Connection,
     meta:{
       title: 'Connection'
     }
@@ -23,12 +23,12 @@ const routes = [
   {
     path: '/createArticle',
     name: 'createArticle',
-    component: ()=>
-        import("@/components/CreateArticle.vue"),
+    component: createArticle,
     meta:{
       title: 'Create Article'
     }
   }
+
 ]
 
 const router = createRouter({

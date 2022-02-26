@@ -6,43 +6,35 @@
   </transition>
   <MenuProfile v-show="$store.state.toggleProfileMenu"/>
   <HeaderConnected/>
-  <section>
-    <div></div>
-    <div class="articles-div">
-      <Articles/>
-    </div>
-    <div></div>
 
-  </section>
+  <ListOfArticles/>
 
 </template>
 
 <script>
-import HeaderConnected from './components/HeaderConnected.vue';
-import Articles from './components/Articles.vue';
-import ConnectionModal from './components/ConnectionModal.vue';
-import MenuProfile from './components/MenuProfile.vue';
+import HeaderConnected from '@/components/HeaderConnected.vue';
+import ListOfArticles from "@/components/ListOfArticles";
+import ConnectionModal from '@/components/ConnectionModal.vue';
+import MenuProfile from '@/components/MenuProfile.vue';
 import CreateArticle from "@/components/CreateArticle";
-
-
 
 export default {
 
   name: 'App',
   components: {
-    CreateArticle,
+    ListOfArticles,
     HeaderConnected,
-    Articles,
     ConnectionModal,
-    MenuProfile
+    MenuProfile,
+    CreateArticle,
   },
 
   data() {
     return {
-      user:{
+      user: {
         id: '',
-        pseudo:'',
-        mail:''
+        pseudo: '',
+        mail: ''
       }
     }
   },
@@ -51,23 +43,14 @@ export default {
 
   },
 
-  methods: {
+  methods: {},
 
-  },
-
-  watch:{
-
-  }
+  watch: {}
 }
 
 </script>
 
 <style>
-
-section {
-  display: grid;
-  grid-template-columns: 1fr 60% 1fr;
-}
 
 .articles-div {
   margin-top: 150px;
