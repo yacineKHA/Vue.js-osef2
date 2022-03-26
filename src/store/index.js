@@ -16,8 +16,6 @@ export default createStore({
             email: localStorage.getItem('mail'),
         },
 
-        userID: '',
-
     },
 
     mutations: {

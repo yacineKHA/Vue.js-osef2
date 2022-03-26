@@ -1,6 +1,7 @@
 <template>
   <div class="modal-window">
 
+    <!--      <p id="message">{{this.message}}</p>-->
     <div class="overlay"></div>
 
     <div v-show="toggleForm" class="container">
@@ -11,16 +12,15 @@
 
         <div class="div">
           <img src="../assets/email_black_36dp.png" height="72" alt="img">
-          <input v-model="emailInput" class="emailCo" placeholder="Email" type="text" required>
+          <input v-model="connection.email" class="emailCo" placeholder="Email" type="email" required>
         </div>
         <div class="div">
           <img src="../assets/lock_black_36dp.png" height="72" alt="img">
-          <input v-model="passwordInput" class="mdpCo" placeholder="Mot de passe" type="password" required>
+          <input v-model="connection.password" class="mdpCo" placeholder="Mot de passe" type="password" required>
         </div>
         <span v-show="span">Email ou mot de passe erroné !</span>
-        <router-link to="/">
-          <button @click="connectUser" class="btn btn-primary">Se connecter</button>
-        </router-link>
+
+        <button @click="connectUser" class="btn btn-primary">Se connecter</button>
       </form>
 
       <p>Pas de compte ?</p>
@@ -29,36 +29,40 @@
     </div>
 
     <div v-show="!toggleForm" class="container">
-      <img class="logo" src="../assets/logoOsef/logo5.svg" width="70" alt="Logo">
+      <div>
+        <img class="logo" src="../assets/logoOsef/logo5.svg" width="70" alt="Logo">
+        <h3 class="inscription">Inscription</h3>
+      </div>
 
       <form action="" method="post">
-        <h3>Inscription</h3>
+
         <div class="div">
           <img src="../assets/email_black_36dp.png" alt="img">
-          <input class="emailInput" placeholder="Email" type="text" required>
+          <input v-model="registration.email" class="emailInput" placeholder="Email" type="email" required>
         </div>
         <div class="div">
           <img src="../assets/account_circle_black_48dp.svg" alt="img">
-          <input class="pseudoInput" placeholder="Pseudo" type="text" required>
+          <input v-model="registration.pseudo" class="pseudoInput" placeholder="Pseudo" type="text" required>
         </div>
         <div class="div">
           <img src="../assets/lock_black_36dp.png" alt="img">
-          <input class="mdp" placeholder="Mot de passe" type="password" required>
+          <input v-model="registration.password1" class="mdp" placeholder="Mot de passe" type="password" required>
         </div>
         <div class="div">
           <img src="../assets/lock_black_36dp.png" alt="img">
-          <input class="mdp" placeholder="Confirmer mot de passe" type="password" required>
+          <input v-model="registration.password2" class="mdp" placeholder="Confirmer mot de passe" type="password"
+                 required>
         </div>
-        <button class="btn btn-primary">S'inscrire</button>
+        <button @click="RegisterUser" class="btn btn-primary">S'inscrire</button>
       </form>
 
       <p>Déjà inscrit ?</p>
       <button @click="switchToggleForm" class="inscription-button">Se connecter ici</button>
     </div>
 
-    <div @click="$store.commit('TOGGLE_CONNECTION_SWITCH')" class="x">
-      <router-link to="">X</router-link>
-    </div>
+    <router-link to="/" class="x">
+        X
+    </router-link>
 
   </div>
 
@@ -70,7 +74,6 @@ import axios from "axios";
 import store from "@/store";
 // import {mapState} from "vuex";
 
-
 export default {
 
   name: "Modal",
@@ -78,19 +81,36 @@ export default {
   data() {
     return {
       toggleForm: true,
-      span:false,
-      emailInput: "",
-      passwordInput: "",
-      user:{
+      span: false,
+
+      message: "Je suis un message",
+
+      connection: {
+        email: "",
+        password: ""
+      },
+
+      registration: {
+        email: "",
+        pseudo: "",
+        password1: "",
+        password2: "",
+      },
+
+      user: {
         id: "",
         pseudo: "",
-        email:""
+        email: ""
       }
     }
   },
 
-  mounted() {
-
+  watch: {
+    message() {
+      setInterval(() => {
+        this.message = "r";
+      }, 5000)
+    }
   },
 
   methods: {
@@ -99,16 +119,22 @@ export default {
 
     },
 
-    connectUser(e){
+    connectUser(e) {
+
       e.preventDefault();
 
-      axios.post('http://localhost/prj/osef-vue2/src/api/UserConnection.php', {
-        mail: this.emailInput,
-        mdp: this.passwordInput,})
-          .then((response) =>{
-            if (response.data){
-              // store.dispatch('setId', response.data);
-              store.dispatch('setUserId', response.data[2]);
+      const formData = new FormData();
+
+      formData.append('mail', this.connection.email);
+      formData.append('mdp', this.connection.password);
+
+      axios.post('http://localhost/prj/osef-vue2/src/api/index.php?url=connectionUser', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+      })
+          .then((response) => {
+            if (response.data) {
 
               localStorage.setItem('id', response.data[0]);
               localStorage.setItem('pseudo', response.data[1]);
@@ -116,10 +142,11 @@ export default {
 
               console.log('session: ' + response.data[3]);
               this.span = false;
-              location.reload();
-              console.log("le post fonctionne : "+ response.data);
-              console.log("store user: "+ store.state.user[1]);
-              console.log("localStorage: "+ localStorage.getItem('mail'));
+              this.store.commit('TOGGLE_CONNECTION_SWITCH');
+
+              console.log("le post fonctionne : " + response.data);
+              console.log("store user: " + store.state.user[1]);
+              console.log("localStorage: " + localStorage.getItem('mail'));
               this.store.TOGGLE_CONNECTION_SWITCH();
               stop();
             } else {
@@ -127,36 +154,53 @@ export default {
               console.log("data est vide")
             }
           })
-          .catch(function (error){
+          .catch(function (error) {
             this.span = true;
-            console.log("Poste marche pas: "+error);
+            console.log("Poste marche pas: " + error);
           });
+    },
+
+    RegisterUser(e) {
+
+      e.preventDefault();
+
+      if (this.registration.password1 === this.registration.password2) {
+
+        const formData = new FormData();
+
+        formData.append('mailReg', this.registration.email);
+        formData.append('pseudoReg', this.registration.pseudo);
+        formData.append('password1', this.registration.password1);
+        formData.append('password2', this.registration.password2);
+
+        axios.post('http://localhost/prj/osef-vue2/src/api/index.php?url=registration', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+        })
+            .then((response) => {
+              if (response.data) {
+                this.message = response.data;
+                console.log("Inscription: " + response.data);
+                stop();
+              } else {
+                console.log("data est vide");
+              }
+            })
+            .catch(function (error) {
+              console.log("Inscription ne fonctionne pas: " + error);
+            });
+      } else {
+        console.log('Les mots de passes ne correspondent pas.');
+      }
     }
-
-    //url axios 'http://localhost/prj/osef-vue2/src/components/bdd.php'
-    //   getUsers(){
-    //     axios.get('http://localhost/prj/osef-vue2/src/api/bdd.php')
-    //     .then(response=>{
-    //
-    //       console.log(response.data);
-    //       this.user = response.data;
-    //     })
-    //     .catch(e =>{
-    //       console.log(e + " ça ne marche pas");
-    //     })
-    //   }
   },
-
-  computed:{
-
-  }
 }
-
 </script>
 
 <style scoped>
 
-router-link{
+router-link {
   width: 100%;
 }
 
@@ -180,6 +224,11 @@ router-link{
   margin-top: 170px;
   z-index: 4;
   box-shadow: 5px 7px 0 2px #8c52ff;
+}
+
+.container div:first-of-type {
+  display: flex;
+  align-items: center;
 }
 
 .x {
@@ -215,7 +264,7 @@ form {
   height: 40px;
 }
 
-.div img{
+.div img {
   height: 25px;
   margin-left: 10px;
 }
@@ -248,7 +297,7 @@ form button:hover {
   background-color: #8c52ff;
 }
 
-span{
+span {
   color: red;
   font-weight: bolder;
 }
@@ -270,6 +319,36 @@ p {
   border: 0;
   background-color: white;
   font-weight: bolder;
+  border: lightgrey 1px solid;
+}
+
+/*#message{*/
+/*  position: fixed;*/
+
+/*  text-align: center;*/
+/*  z-index: 100;*/
+/*  width: 100%;*/
+/*  height: 15%;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*}*/
+
+#message {
+  z-index: 100;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 6%;
+  right: 25%;
+  top: 100px;
+  border: 9px solid #56FFC2;
+  background-color: #8c52ff;
+  color: white;
+  font-weight: bold;
+  font-size: large;
 }
 
 </style>

@@ -20,7 +20,8 @@ export default {
 <style scoped>
 section {
   display: grid;
-  grid-template-columns: 1fr 60% 1fr;
+  grid-template-columns: 1fr 45% 1fr;
+  background-color: #f1f1f1;
 }
 
 .articles-div {

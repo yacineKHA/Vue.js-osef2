@@ -8,7 +8,7 @@
           <img src='../assets/account_circle_black_48dp.png'>
           <span>Bonjour {{this.user.pseudo}}</span>
         </div>
-        <li><img src='../assets/account_circle_black_48dp.png'>Mon profil</li>
+        <li><img src='../assets/account_circle_black_48dp.png'><router-link to="/MyProfile">Mon profil</router-link></li>
         <li><img src='../assets/manage_accounts_black_48dp.svg'>Paramètres du compte</li>
         <li><img src='../assets/list_bulleted_black_48dp.svg'>Mes posts</li>
         <li><img src='../assets/help_outline_black_48dp.svg'>Help ?</li>
@@ -20,7 +20,6 @@
 
 <script>
 import store from "@/store";
-
 
 export default {
 
@@ -63,7 +62,7 @@ div{
   display: flex;
   flex-direction: column;
   background: white;
-  position: absolute;
+  position: fixed;
   color: black;
   width: 300px;
   right: 7px;

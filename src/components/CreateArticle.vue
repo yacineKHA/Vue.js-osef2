@@ -47,16 +47,16 @@ export default {
       formData.append('title', this.title);
       formData.append('text', this.text);
 
-      axios.post('http://localhost/prj/osef-vue2/src/api/ArticleManager.php', formData, {
+
+      axios.post('http://localhost/prj/osef-vue2/src/api/index.php?url=addArticle', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
       })
           .then(function (response) {
-            console.log("reponnnnse: " + response);
-            console.log("title: ");
-            console.log("response : " + response.data);
+            console.log("ok addArticle : " + response.data);
           })
+
           .catch(function (error) {
             console.log("Poste marche pas: " + error);
           });

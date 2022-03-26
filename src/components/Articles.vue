@@ -1,85 +1,67 @@
 <template>
-    <div id="bottom">
-      <button @click="getArticles">Get Articles</button>
+  <div v-for="article in articles" :key="article['idArticle']" class="conteneur">
+    <div id="pseudo">
+      <div id="imageProfile">
+        <img :src="`../../public/images/${article.image}`" alt="profile Image">
+      </div>
+      <div id="nameProfile">
+        <p>Pseudo</p>
+        <p>#FILMS</p>
+        <p>{{ article.date }}</p>
+      </div>
     </div>
-    <div v-for="article in articles" :key="article['idArticle']" class="conteneur">
-            <div id="pseudo">
-              <div id="imageProfile">
-                <img src="../assets/babyYoga.jpeg" alt="profile Image">
-              </div>
-              <div id="nameProfile">
-
-                <p>{{article["title"]}}</p>
-                <p>#FILMS</p>
-                <p>blabla{{article["text"]}}</p>
-              </div>
-            </div>
-            <ul id="contenu">
-                <li>
-                    <div id="img">
-                        <img src="" alt="article Image">
-                    </div>
-                    <div id="texte">
-
-                    </div>
-                </li>
-            </ul>
-
+    <div id="contenu">
+      <h3 id="title">{{ article.title }}</h3>
+      <p id="texte">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum delectus dolore doloribus numquam
+        possimus. Ab amet animi consectetur deleniti exercitationem facilis, illum molestias, nobis obcaecati, placeat
+        similique tenetur veritatis.
+      </p>
+      <div  id="img">
+        <img :src="`/images/${article.image}`" :alt="article['image']">
+      </div>
     </div>
+    
+  </div>
 
 </template>
 
 
 <script>
-    import axios from "axios";
+import axios from "axios";
 
-    export default {
-        name: "article",
+export default {
+  name: "article",
 
-        data(){
-          return{
-            user:{
-
-            },
-            articles: [],
-            articleId: [],
-            articleTitle:[],
-            articleText:[],
-            articleImage:[],
-            articleDate:[]
-          }
-        },
-
-        methods:{
-          getArticles(){
-            axios.post('http://localhost/prj/osef-vue2/src/api/getArticles.php')
-                .then((response) =>{
-                  if (response.data){
-                    this.articles = response.data;
-                    this.articleId = [response.data['idArticle']];
-                    this.articleTitle = response.data['title'];
-                    this.articleText = response.data['text'];
-                    this.articleImage = "../../public/images"+ response.data['image'];
-                    this.articleDate = response.data['date'];
-                    console.log("Articles :" + response.data[2]['title']);
-                    stop();
-                  } else {
-                    this.span = true;
-                    console.log("data est vide")
-                  }
-                })
-                .catch(function (error){
-                  this.span = true;
-                  console.log("Poste marche pas: "+error);
-                });
-          }
-        },
-
-        mounted() {
-          //Produit une erreur si décommenté.
-          // this.methods.getArticles();
-        }
+  data() {
+    return {
+      articles: [],
     }
+  },
+
+  methods: {
+    getArticles() {
+      return axios.get('http://localhost/prj/osef-vue2/src/api/index.php?url=getAllArticles')
+          .then((response) => {
+            if (response.data) {
+              this.articles = response.data;
+              console.log("Articles :" + response.data);
+              stop();
+            } else {
+              this.span = true;
+              console.log("data est vide")
+            }
+          })
+          .catch(function (error) {
+            this.span = true;
+            console.log("Post ne marche pas: " + error);
+          });
+    }
+  },
+
+  beforeMount() {
+    this.getArticles();
+  }
+}
 
 </script>
 
@@ -96,41 +78,59 @@
   text-overflow: hidden;
   word-wrap: break-word;
   border: 1px solid rgba(38, 37, 37, 0.05);
+  margin-bottom: 110px;
+  background-color: white;
+  /*overflow: hidden;*/
+}
+
+.conteneur:hover{
+  border: none;
+  box-shadow: 7px 7px 0px 0px #56FFC2;
+  transform: scale(1.03);
 }
 
 #pseudo {
   display: flex;
+  text-align: center;
+  justify-content: center;
   align-items: center;
+  /*background: #56FFC2 linear-gradient(90deg, rgba(115, 254, 204, 1) 0%, rgba(118, 212, 212, 1) 51%, rgb(198, 162, 236) 100%);*/
   background-color: #56FFC2;
-  background: linear-gradient(90deg, rgba(115,254,204,1) 0%, rgba(118,212,212,1) 51%, rgb(198, 162, 236) 100%);
   width: 100%;
-  padding: 10px 10px;
-
-}
-
-#imageProfile{
-  display: block;
   height: 50px;
-  width: 60px;
-  border-radius: 70px;
-  background: #8c52ff;
+  padding: 10px 10px;
+}
+
+#imageProfile {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: black;
   overflow: hidden;
-  margin-right: 10px;
-}
-
-p{
-  font-weight: bold;
-}
-
-#imageProfile img{
-  margin: auto;
-  width: auto;
-  height: 55px;
+  margin-right: 4px;
   vertical-align: middle;
-  margin-left: -10%;
+
+  /*display: inline-block;*/
+  /*height: 20px;*/
+  /*margin-right: 4px;*/
+  /*vertical-align: middle;*/
+  /*width: 20px;*/
 }
 
-#nameProfile{
+p {
+
+}
+
+#imageProfile img {
+  object-fit: contain;
+  /*width: auto;*/
+  /*height: 55px;*/
+  /*vertical-align: middle;*/
+  /*margin: auto auto auto -10%;*/
+}
+
+#nameProfile {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -138,16 +138,24 @@ p{
   height: 100%;
 }
 
-#nameProfile p:last-child{
+#nameProfile p:last-child {
   color: white;
 }
 
 #contenu {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
   word-wrap: break-word;
+}
+
+#title{
+  text-align: center;
+  font-weight: bold;
+  font-size: larger;
+  font-family: "Comic Sans MS",serif;
 }
 
 #texte {
@@ -155,12 +163,25 @@ p{
   width: 100%;
   word-wrap: break-word;
   text-overflow: hidden;
+  color: grey;
+}
+
+#img{
+  background-color: white;
+  width: 100%;
+  height: 100%;
+}
+
+img{
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
 }
 
 #bottom{
-  display: block;
-  width: 100%;
   background-color: #56FFC2;
+  height: 70px;
+  width: 100%;
 }
 
 </style>
