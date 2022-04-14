@@ -1,28 +1,40 @@
 <template>
-  <div v-for="article in articles" :key="article['idArticle']" class="conteneur">
-    <div id="pseudo">
-      <div id="imageProfile">
-        <img :src="`../../public/images/${article.image}`" alt="profile Image">
-      </div>
+<!--  <div v-for="article in articles" :key="article['idArticle']" class="conteneur">-->
+<!--    <div  id="img">-->
+<!--      <img :src="`/images/${article.image}`" :alt="article['image']">-->
+<!--    </div>-->
+<!--    <div id="pseudo">-->
+<!--      <div id="imageProfile">-->
+<!--        <img :src="`../../public/images/${article.image}`" alt="profile Image">-->
+<!--      </div>-->
+<!--      <div id="nameProfile">-->
+<!--        <p>Pseudo</p>-->
+<!--        <p>#FILMS</p>-->
+<!--        <p>{{ article.date }}</p>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div id="contenu">-->
+<!--      <h3 id="title">{{ article.title }}</h3>-->
+<!--&lt;!&ndash;      <p id="texte">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum delectus dolore doloribus numquam&ndash;&gt;-->
+<!--&lt;!&ndash;        possimus. Ab amet animi consectetur deleniti exercitationem facilis, illum molestias, nobis obcaecati, placeat&ndash;&gt;-->
+<!--&lt;!&ndash;        similique tenetur veritatis.&ndash;&gt;-->
+<!--&lt;!&ndash;      </p>&ndash;&gt;-->
+
+<!--    </div>-->
+<!--    -->
+<!--  </div>-->
+  <div class="card" v-for="article in articles" :key="article['idArticle']" style="width: 80%;">
+    <img class="card-img-top" :src="`/images/${article.image}`" :alt="article['image']">
+    <div class="card-body">
+      <h5 class="card-title">{{ article.title }}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       <div id="nameProfile">
         <p>Pseudo</p>
         <p>#FILMS</p>
         <p>{{ article.date }}</p>
       </div>
     </div>
-    <div id="contenu">
-      <h3 id="title">{{ article.title }}</h3>
-      <p id="texte">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum delectus dolore doloribus numquam
-        possimus. Ab amet animi consectetur deleniti exercitationem facilis, illum molestias, nobis obcaecati, placeat
-        similique tenetur veritatis.
-      </p>
-      <div  id="img">
-        <img :src="`/images/${article.image}`" :alt="article['image']">
-      </div>
-    </div>
-    
   </div>
-
 </template>
 
 
@@ -67,6 +79,10 @@ export default {
 
 
 <style scoped>
+
+.card{
+  margin-bottom: 80px;
+}
 
 .conteneur {
   display: flex;

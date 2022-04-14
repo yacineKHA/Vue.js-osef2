@@ -63,7 +63,9 @@ import MenuProfile from '@/components/MenuProfile.vue';
   align-items: center;
   height: 65px;
   width: 100%;
-  background-color: #56FFC2;
+  background-color: black;
+  font-family: "Secular One";
+  color: white;
   /*background: #56FFC2 linear-gradient(180deg, #56FFC2 0%, rgba(140, 82, 255, 0.4) 100%);*/
 }
 
