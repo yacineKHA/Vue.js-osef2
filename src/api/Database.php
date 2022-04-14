@@ -2,12 +2,18 @@
 
 class Database
 {
-    protected function getBdd()
+    private static $pdo = null;
+
+    public static function getBdd()
     {
-        try {
-            return new PDO('mysql:host=localhost;dbname=dysit;charset=utf8', 'root', '');
-        } catch (Exception $e) {
-            return die("Erreur: " . $e->getMessage());
+        if (is_null(self::$pdo)){
+            try {
+                self::$pdo = new PDO('mysql:host=localhost;dbname=dysit;charset=utf8', 'root', '');
+            } catch (Exception $e) {
+                die("Erreur: " . $e->getMessage());
+            }
         }
+
+        return self::$pdo;
     }
 }

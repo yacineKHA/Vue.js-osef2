@@ -9,12 +9,12 @@ header('Access-Control-Allow-Headers: X-Requested-With, Accept, Content-type');
 require_once "ImageTrait.php";
 require_once "Database.php";
 
-class ArticleManager extends Database  {
+class ArticleManager  {
     use ImageTrait;
 
     function getAllArticles(){
         try {
-            $req = $this->getBdd()->prepare("SELECT * FROM article");
+            $req = Database::getBdd()->prepare("SELECT * FROM article");
             $req->execute();
             $data = $req->fetchAll();
             if ($data != null) {
@@ -43,7 +43,7 @@ class ArticleManager extends Database  {
         $image_name = $random."_".$image['name'];
 
         try {
-            $req = $this->getBdd()->prepare("INSERT INTO article (title, text, image, date) VALUES (?, ?, ?, ?, ?)");
+            $req = Database::getBdd()->prepare("INSERT INTO article (title, text, image, date) VALUES (?, ?, ?, ?, ?)");
             $req->execute([
                 $title,
                 $text,

@@ -6,7 +6,7 @@ header("Access-control-Allow-Headers: Content-Type");
 
 require_once "Database.php";
 
-class UserManager extends Database
+class UserManager
 {
     function loginUser()
     {
@@ -14,7 +14,7 @@ class UserManager extends Database
         $mdp = htmlspecialchars(strip_tags(trim($_POST['mdp'])));
 
         
-        $req = $this->getBdd()->prepare("SELECT * FROM user WHERE email = ? ");
+        $req = Database::getBdd()->prepare("SELECT * FROM user WHERE email = ? ");
         $req->execute([
             $mail,
         ]);
@@ -55,7 +55,7 @@ class UserManager extends Database
             "Erreur, l'inscription n'a pas pu se dérouler comme prévu."
         ];
 
-        $req = $this->getBdd()->prepare("SELECT * FROM user WHERE email = ? or pseudo = ?");
+        $req = Database::getBdd()->prepare("SELECT * FROM user WHERE email = ? or pseudo = ?");
         $req->execute([
             $mail,
             $pseudo
